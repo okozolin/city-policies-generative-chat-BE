@@ -6,7 +6,8 @@ dist/
 downloads/
 
 .idea
-
+check_venv.py
+main_cookbook.py
 
 # Environments
 .env
