@@ -22,8 +22,12 @@ def extract_value(sync_cursor_page):
         content_block = message.content[0]
         # Extract the value from the text content block
         value = content_block.text.value
-        return value
+        return reverse_hebrew_text(value)
     except (AttributeError, IndexError) as e:
         print(f"Error: {e} - The object structure might be different than expected.")
         return None
 
+def reverse_hebrew_text(text):
+    lines = text.split('\n')
+    reversed_lines = [line[::-1] for line in lines]
+    return '\n'.join(reversed_lines)

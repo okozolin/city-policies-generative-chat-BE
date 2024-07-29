@@ -10,7 +10,7 @@ def main():
             print("Thank you for using Ask Me Policy. Have a great day!")
             break
         answer = policies.answer_api(question)
-        # print(f"A: {answer}\n")
+        print(f"A: {answer}\n")
         show_content(answer)
 
 if __name__ == "__main__":
