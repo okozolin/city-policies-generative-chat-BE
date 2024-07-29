@@ -1,56 +1,15 @@
-import os
-import time
-from openai import OpenAI
-from dotenv import load_dotenv  # Import python-dotenv
+import policies
+from utils import get_user_input
 
-load_dotenv()
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY")
-)
+def main():
+    print("Welcome to Ask Me Policy!")
+    while True:
+        question = get_user_input("Please write your question about the public policies. The available topics are:\nTransport, Health, Real estate.\nWhen finished, press <Enter>:\nQ: ")
+        if question.lower() in ["exit", "quit"]:
+            print("Thank you for using Ask Me Policy. Have a great day!")
+            break
+        answer = policies.answer_api(question)
+        print(f"A: {answer}\n")
 
-assistant_id=os.environ.get("ASSISTANT_ID")
-
-def show_json(obj):
-    print(obj)
-
-#thread
-thread = client.beta.threads.create()
-show_json(thread)
-
-#message
-message = client.beta.threads.messages.create(
-    thread_id=thread.id,
-    role="user",
-    content="מה המדיניות לגבי קירות תמך?",
-)
-#show_json(message)
-
-#run
-run = client.beta.threads.runs.create(
-    thread_id=thread.id,
-    assistant_id=assistant_id,
-)
-#show_json(run)
-
-def wait_on_run(run_wait, thread_wait):
-    while run_wait.status == "queued" or run_wait.status == "in_progress":
-        run_wait = client.beta.threads.runs.retrieve(
-            thread_id=thread_wait.id,
-            run_id=run_wait.id,
-        )
-        time.sleep(0.5)
-    return run_wait
-
-run = wait_on_run(run, thread)
-#show_json(run)
-
-#messages
-messages = client.beta.threads.messages.list(thread_id=thread.id)
-#show_json(messages)
-
-
-# Retrieve all the messages added after our last user message
-messages_after = client.beta.threads.messages.list(
-    thread_id=thread.id, order="asc", after=message.id
-)
-show_json(messages_after)
+if __name__ == "__main__":
+    main()
