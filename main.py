@@ -1,5 +1,6 @@
 import policies
-from utils import get_user_input
+from utils import get_user_input, show_content
+
 
 def main():
     print("Welcome to Ask Me Policy!")
@@ -9,7 +10,8 @@ def main():
             print("Thank you for using Ask Me Policy. Have a great day!")
             break
         answer = policies.answer_api(question)
-        print(f"A: {answer}\n")
+        # print(f"A: {answer}\n")
+        show_content(answer)
 
 if __name__ == "__main__":
     main()
