@@ -11,8 +11,8 @@ def show_json(obj):
 
 def show_content(obj):
     value = extract_value(obj)
-    print(f"A: {value}\n")
-
+    hebrew_value = reverse_hebrew_text(value)
+    print(f"A: {hebrew_value}\n")
 
 def extract_value(sync_cursor_page):
     try:
@@ -21,8 +21,7 @@ def extract_value(sync_cursor_page):
         # Access the first content block in the message content
         content_block = message.content[0]
         # Extract the value from the text content block
-        value = content_block.text.value
-        return reverse_hebrew_text(value)
+        return content_block.text.value
     except (AttributeError, IndexError) as e:
         print(f"Error: {e} - The object structure might be different than expected.")
         return None

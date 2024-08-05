@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import main as ask_me_policy
+from utils import extract_value
 
 app = FastAPI()
 templates = Jinja2Templates(directory="app/templates")
@@ -13,7 +14,8 @@ async def read_root(request: Request):
 @app.post("/submit", response_class=HTMLResponse)
 async def submit_question(request: Request, question: str = Form(...)):
     answer = ask_me_policy.process_question(question)
-    return templates.TemplateResponse("index.html", {"request": request, "answer": answer})
+    answer_value = extract_value(answer)
+    return templates.TemplateResponse("index.html", {"request": request, "answer": answer_value})
 
 if __name__ == "__main__":
     import uvicorn
